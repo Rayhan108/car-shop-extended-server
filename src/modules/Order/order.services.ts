@@ -4,7 +4,7 @@ import { CarModel } from "../Car/car.model";
 import { Torder } from "./order.interface";
 import httpStatus from "http-status";
 import { OrderModel } from "./order.model";
-import catchAsync from "../../app/utils/catchAsync";
+
 //create an order
 const createOrderIntoDB = async (orderData: Torder) => {
 //   const order = new OrderModel(orderData);

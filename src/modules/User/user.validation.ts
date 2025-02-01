@@ -1,16 +1,8 @@
-import { z } from "zod";
+import { z } from 'zod';
+import { UserStatus } from './user.constant';
 
-// const registerUserValidationSchema = z.object({
-//     body: z.object({
-
-//         name: z.string().min(1, "Name is required"),
-//         email: z.string().email("Invalid email address"),
-//         password: z.string(),
-//         role: z.enum(["user", "admin"]).default("user"),
-//         createdAt: z.date().default(() => new Date()),
-//         updatedAt: z.date().default(() => new Date()),
-//     })
-// })
-// export const AuthValidation = {
-//     registerUserValidationSchema,
-//     };
+export const changeStatusValidationSchema = z.object({
+  body: z.object({
+    status: z.enum([...UserStatus] as [string, ...string[]]),
+  }),
+});
