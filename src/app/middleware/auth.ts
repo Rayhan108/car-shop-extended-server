@@ -23,12 +23,16 @@ const auth = (...requiredRoles: TUserRole[]) => {
       config.jwt_access_secret as string,
     ) as JwtPayload;
 
-    const { role, userId, iat } = decoded;
-console.log('email',userId);
-    // checking if the user is exist
-    const user = await UserModel.isUserExistsByEmail(userId);
+// console.log('auth.ts 25 line');
+    // console.log('email',decoded);
 
+    const { role, userId, iat } = decoded;
+    // console.log('userID',userId);
+    // checking if the user is exist
+    const user = await UserModel.isUserExistsById(userId);
+    // console.log('Found user:', user);
     if (!user) {
+        console.log('User not found in database!');
       throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
     }
 
@@ -39,6 +43,16 @@ console.log('email',userId);
         'You are not authorized !',
       );
     }
+
+    if (
+        user.passwordChangedAt &&
+        UserModel.isJWTIssuedBeforePasswordChanged(
+          user.passwordChangedAt,
+          iat as number,
+        )
+      ) {
+        throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized !');
+      }
 
     req.user = decoded as JwtPayload & { role: string };
     next();
