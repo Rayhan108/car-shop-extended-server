@@ -13,6 +13,7 @@ const orderSchema = new Schema<Torder>(
         car: {
           type: Schema.Types.ObjectId,
           required: true,
+          ref: 'Car',
         },
         quantity: {
           type: Number,

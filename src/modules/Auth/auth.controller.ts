@@ -9,7 +9,7 @@ const registerUser = async (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log(req);
+  // console.log(req);
   try {
     const result = await AuthServices.registeredUserIntoDB(req.body);
 

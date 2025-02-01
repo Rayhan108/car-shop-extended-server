@@ -1,18 +1,22 @@
 
+import AppError from "../../errors/AppError";
 import { CarModel } from "../Car/car.model";
 import { Torder } from "./order.interface";
+import httpStatus from "http-status";
 import { OrderModel } from "./order.model";
+import catchAsync from "../../app/utils/catchAsync";
 //create an order
 const createOrderIntoDB = async (orderData: Torder) => {
-  const order = new OrderModel(orderData);
+//   const order = new OrderModel(orderData);
+  const order = await OrderModel.create(orderData);
   const car = await CarModel.findById(orderData.car);
 
   if (!car) {
-    throw new Error("Car not found.");
+    throw new AppError(httpStatus.NOT_FOUND,"Car not found.");
     
   }
   if (car.quantity < orderData.quantity) {
-    throw new Error("Insufficient Stock");
+    throw new AppError(httpStatus.NOT_ACCEPTABLE,"Insufficient Stock!");
   }
   car.quantity -= orderData.quantity;
 
@@ -25,6 +29,11 @@ const createOrderIntoDB = async (orderData: Torder) => {
   const result = await order.save();
   return result;
 };
+// get all orders
+const getAllOrderFromDB=async()=>{
+    const result = await OrderModel.find().populate('car');
+    return result;
+}
 //get total revenue
 const getTotalReveneuFromCarModel = async () => {
   const revenueResult = await OrderModel.aggregate([
@@ -63,4 +72,5 @@ const getTotalReveneuFromCarModel = async () => {
 export const OrderServices = {
   createOrderIntoDB,
   getTotalReveneuFromCarModel,
+  getAllOrderFromDB
 };
