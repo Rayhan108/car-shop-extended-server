@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import { AuthServices } from './auth.services';
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../../app/utils/catchAsync';
+import config from '../../app/config';
 const registerUser = async (
   req: Request,
   res: Response,
@@ -24,12 +25,19 @@ const registerUser = async (
 };
 const userLogin=catchAsync(async(req,res)=>{
     const result = await AuthServices.loginUser(req.body);
-    
+    const { refreshToken, accessToken } = result;
+//set refress token on cookies
+  res.cookie('refreshToken', refreshToken, {
+    secure: config.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'none',
+    maxAge: 1000 * 60 * 60 * 24 * 365,
+  });
     sendResponse(res, {
         success: true,
         message: 'User Logged in Successfully',
         statusCode: httpStatus.OK,
-        data: result,
+        data: {accessToken},
       });
 })
 export const AuthControllers = {
