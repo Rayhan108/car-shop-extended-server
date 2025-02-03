@@ -32,7 +32,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
     const user = await UserModel.isUserExistsById(userId);
     // console.log('Found user:', user);
     if (!user) {
-        console.log('User not found in database!');
+        // console.log('User not found in database!');
       throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
     }
 

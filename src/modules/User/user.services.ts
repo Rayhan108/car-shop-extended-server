@@ -6,6 +6,13 @@ const changeStatus = async (id: string, payload: { status: string }) => {
   });
   return result;
 };
+
+const getSingleUserFromDB = async(id:string)=>{
+    const result = await UserModel.findById(id);
+    return result;
+}
+
+
 export const UserServices = {
-  changeStatus,
+  changeStatus,getSingleUserFromDB
 };

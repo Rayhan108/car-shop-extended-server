@@ -22,6 +22,11 @@ const carSchema = new Schema<Tcar>({
         required: true,
         min: 0
       },
+      image: {
+        type: String,
+        required: true,
+        
+      },
       category: {
         type: String,
         enum: ['Sedan', 'SUV', 'Truck', 'Coupe', 'Convertible'],

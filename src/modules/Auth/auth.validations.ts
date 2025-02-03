@@ -11,6 +11,7 @@ const loginValidationSchema = z.object({
 
         name: z.string().trim().min(1, "Name is required"),
         email: z.string().trim().email("Invalid email address"),
+        image: z.string().trim().optional(),
         password: z.string().trim(),
         role: z.enum(["user", "admin"]).default("user"),
         createdAt: z.date().default(() => new Date()),
@@ -25,4 +26,12 @@ const changePasswordValidationSchema = z.object({
       newPassword: z.string({ required_error: 'Password is required' }),
     }),
   });
-export const AuthValidation = {loginValidationSchema,registerUserValidationSchema,changePasswordValidationSchema}
+  const refreshTokenValidationSchema = z.object({
+
+    cookie: z.object({
+      refreshToken: z.string({
+        required_error: 'Refresh token is required!',
+      }),
+    }),
+  });
+export const AuthValidation = {loginValidationSchema,registerUserValidationSchema,changePasswordValidationSchema,refreshTokenValidationSchema}
