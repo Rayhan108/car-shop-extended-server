@@ -1,5 +1,4 @@
 import QueryBuilder from "../../app/builder/QueryBuilder";
-import { CarSearchableFields } from "./car.constant";
 import { Tcar } from "./car.interface";
 import { CarModel } from "./car.model";
 
@@ -15,23 +14,48 @@ const getAllCarFromDB = async(  query: Record<string, unknown>,)=>{
 
     const filterQuery: Record<string, unknown> = {};
 
-   
+   // Apply search to multiple fields
+   if (query?.search) {
+    const searchRegex = { $regex: query.search, $options: "i" };
+    filterQuery.$or = [
+        { brand: searchRegex },
+        { model: searchRegex },
+        { category: searchRegex }
+    ];
+}
+
     if(query?.brand){
         filterQuery.brand={$regex:query?.brand,$options:"i"}
     }
+
     if(query?.model){
         filterQuery.model={$regex:query?.model,$options:"i"}
     }
     if(query?.category){
         filterQuery.category={$regex:query?.category,$options:"i"}
     }
-   // Apply search to multiple fields
-   if (query?.search) {
-    filterQuery.$or = [
-        { brand: { $regex: query.search, $options: "i" } },
-        { model: { $regex: query.search, $options: "i" } },
-        { category: { $regex: query.search, $options: "i" } }
-    ];
+   
+// price range filtering
+
+if (query?.minPrice || query?.maxPrice) {
+    filterQuery.price = {} as { $gte?: number; $lte?: number };
+
+    if (query?.minPrice) {
+        (filterQuery.price as { $gte?: number }).$gte = Number(query.minPrice);
+    }
+    if (query?.maxPrice) {
+        (filterQuery.price as { $lte?: number }).$lte = Number(query.maxPrice);
+    }
+}
+ // availability based on quantity
+ if (query?.availability) {
+    const availabilityValue = String(query.availability).toLowerCase();
+
+    if (availabilityValue === "in-stock") {
+        filterQuery.quantity = { $gt: 0 }; // More than 0 units available
+    } else if (availabilityValue === "out-of-stock") {
+        filterQuery.quantity = { $lte: 0 }; // 0 or less means out of stock
+    }
 }
 
 // console.log("updated filtered query",filterQuery);
