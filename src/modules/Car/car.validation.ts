@@ -17,9 +17,13 @@ const carValidationSchema = z.object({
         invalid_type_error: 'Price must be a number',
       })
       .min(0, 'Price must be a non-negative number'),
-    category: z.enum(['Sedan', 'SUV', 'Truck', 'Coupe', 'Convertible'], {
-      errorMap: () => ({ message: 'Category is not valid' }),
+    category:z.string({
+      required_error: 'category is required',
     }),
+    // enum(['Sedan', 'SUV', 'Truck', 'Coupe', 'Convertible'], {
+    //   errorMap: () => ({ message: 'Category is not valid' }),
+    // })
+  
     image: z.string({
       required_error: 'Image is required',
     }),

@@ -29,7 +29,7 @@ const carSchema = new Schema<Tcar>({
       },
       category: {
         type: String,
-        enum: ['Sedan', 'SUV', 'Truck', 'Coupe', 'Convertible'],
+        // enum: ['Sedan', 'SUV', 'Truck', 'Coupe', 'Convertible'],
         required: true,
       },
       description: {

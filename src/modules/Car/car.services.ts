@@ -10,14 +10,43 @@ const createCarIntoDB = async (carData: Tcar) => {
   return result;
 };
 const getAllCarFromDB = async(  query: Record<string, unknown>,)=>{
-    // const car = await CarModel.find();
+
+    // console.log("all car query",query);
+
+    const filterQuery: Record<string, unknown> = {};
+
+   
+    if(query?.brand){
+        filterQuery.brand={$regex:query?.brand,$options:"i"}
+    }
+    if(query?.model){
+        filterQuery.model={$regex:query?.model,$options:"i"}
+    }
+    if(query?.category){
+        filterQuery.category={$regex:query?.category,$options:"i"}
+    }
+   // Apply search to multiple fields
+   if (query?.search) {
+    filterQuery.$or = [
+        { brand: { $regex: query.search, $options: "i" } },
+        { model: { $regex: query.search, $options: "i" } },
+        { category: { $regex: query.search, $options: "i" } }
+    ];
+}
+
+// console.log("updated filtered query",filterQuery);
+
+const sortOption = query?.sortBy === 'asc'?1:-1;
+
     const getAllCarQuery=new QueryBuilder(CarModel.find(),query)
-    .search(CarSearchableFields)
-    .filter()
-    .sort()
+    // .search(CarSearchableFields)
+    // .filter()
+    // .sort()
     .paginate()
-    .fields();
-    const result = await getAllCarQuery.modelQuery;
+    // .fields();
+    // const result = await getAllCarQuery.modelQuery;
+
+    const result = await CarModel.find(filterQuery).sort({price:sortOption})
     const meta = await getAllCarQuery.countTotal();
     return{ result,meta};
 }

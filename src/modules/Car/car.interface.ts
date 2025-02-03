@@ -3,7 +3,7 @@ export type Tcar ={
     model:string;
     year:number;
     price:number;
-    category:'Sedan'| 'SUV'| 'Truck'| 'Coupe'| 'Convertible';
+    category:string;
     image:string;
     description:string;
     quantity:number;
