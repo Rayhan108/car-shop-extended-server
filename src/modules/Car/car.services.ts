@@ -79,9 +79,11 @@ const getSingleCarFromDB = async(id:string)=>{
     return result;
 }
 const updateCarFromDB = async(id:string,data:Tcar)=>{
-    const result = await CarModel.findByIdAndUpdate(id,data,{
-        new:true,
-    })
+    // console.log(data,id);
+    const result= await CarModel.findByIdAndUpdate(id, data, {
+        new: true,
+        runValidators: true,
+      });
     return result;
 }
 const deleteCarFromDB=async (id:string)=>{

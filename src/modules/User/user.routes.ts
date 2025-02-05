@@ -15,5 +15,6 @@ router.post(
   UserControllers.changeStatus,
 );
 router.get('/:userId',UserControllers.getSingleUser)
+router.get('/allUser',UserControllers.getAllUser)
 
 export const UserRoutes = router;

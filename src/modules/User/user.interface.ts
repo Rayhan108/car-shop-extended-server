@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Model } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { USER_ROLE } from './user.constant';
 
 export interface TUser {
@@ -13,6 +13,22 @@ export interface TUser {
   status: 'in-progress' | 'blocked';
   createdAt: Date;
   updatedAt: Date;
+}
+export interface IUser extends Document {
+  userId:string;
+  name: string;
+  email: string;
+  password: string;
+  role: 'admin'|'user';
+  phone?: string;
+  address?: string;
+  city?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export interface IUserMethods {
+  comparePassword(candidatePassword: string): Promise<boolean>;
+  generateToken(): string;
 }
 
 export interface User extends Model<TUser> {

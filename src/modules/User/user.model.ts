@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
-import { TUser, User } from './user.interface';
+// import jwt, { SignOptions } from "jsonwebtoken";
+import {  TUser, User } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../app/config';
 import { UserStatus } from './user.constant';
@@ -85,4 +86,16 @@ userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
     new Date(passwordChangedTimestamp).getTime() / 1000;
   return passwordChangedTime > jwtIssuedTimestamp;
 };
+
+// userSchema.methods.generateToken = function (): string {
+//   return jwt.sign(
+//     { email: this.email, role: this.role },
+//     config.jwt_access_secret!,
+//     {
+//       expiresIn: config.jwt_access_expires_in!,
+//     } as SignOptions
+//   );
+// };
+
+
 export const UserModel = model<TUser, User>('User', userSchema);

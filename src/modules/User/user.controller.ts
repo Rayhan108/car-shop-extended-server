@@ -18,6 +18,17 @@ const changeStatus = catchAsync(async (req, res) => {
 });
 const getSingleUser = catchAsync(async(req:Request,res:Response)=>{
 
+  const result = await UserServices.getAllUserFromDB();
+  sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User retrived succesfully!',
+      data: result,
+    });
+
+})
+const getAllUser = catchAsync(async(req:Request,res:Response)=>{
+
   const {userId}=req.params;
   const result = await UserServices.getSingleUserFromDB(userId);
   sendResponse(res, {
@@ -29,5 +40,5 @@ const getSingleUser = catchAsync(async(req:Request,res:Response)=>{
 
 })
 export const UserControllers = {
-  changeStatus,getSingleUser
+  changeStatus,getSingleUser,getAllUser
 };

@@ -29,6 +29,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.9.6",
+    "shurjopay": "^0.12.1",
     "ts-node-dev": "^2.0.0",
     "zod": "^3.24.1"
   },
