@@ -52,7 +52,7 @@ const updateCarValidationSchema = z.object({
       .gte(1886, 'Year must be 1886 or later')
       .optional(),
     price: z.number().min(0, 'Price must be a non-negative number').optional(),
-    category: z.enum(['Sedan', 'SUV', 'Truck', 'Coupe', 'Convertible']).optional(),
+    category: z.string().optional(),
     image: z.string().optional(),
     description: z.string().optional(),
     quantity: z.number().int('Quantity must be an integer').min(0, 'Quantity must be a non-negative number').optional(),
