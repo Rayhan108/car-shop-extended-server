@@ -10,4 +10,5 @@ router.post('/',auth(USER_ROLE.user), OrderController.createOrder)
 router.get('/orders', auth(USER_ROLE.admin), OrderController.getAllOrders);
 router.get('/revenue', auth(USER_ROLE.admin), OrderController.getTotalRevenue);
 router.get("/verify", auth(USER_ROLE.user), OrderController.verifyPayment);
+router.get("/:id", auth(USER_ROLE.user), OrderController.getSingleOrders);
 export const OrderRoute = router;

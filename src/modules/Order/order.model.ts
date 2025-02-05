@@ -33,11 +33,11 @@ import { IOrder} from "./order.interface";
 
   const orderSchema = new Schema<IOrder>(
     {
-      // user: {
-      //   type: Schema.Types.ObjectId,
-      //   ref: "Car",
-      //   required: true,
-      // },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
       products: [
         {
           product: {

@@ -41,7 +41,7 @@ const createOrderIntoDB = async (
 
 
   let order = await OrderModel.create({
-    user,
+    user:userData?._id,
     products: productDetails,
     totalPrice,
   });
@@ -111,6 +111,16 @@ const getAllOrderFromDB=async()=>{
     const result = await OrderModel.find();
     return result;
 }
+// get each user order
+const getSingleOrder=async(id:string)=>{
+  const userOrders = await OrderModel.find({ user: id }).populate({
+    path: "products.product",
+
+  });
+
+
+    return userOrders;
+}
 //get total revenue
 const getTotalReveneuFromCarModel = async () => {
   const revenueResult = await OrderModel.aggregate([
@@ -146,9 +156,14 @@ const getTotalReveneuFromCarModel = async () => {
   const totalRevenue =revenueResult.length > 0 ? revenueResult[0].totalRevenue : 0;
   return totalRevenue;
 };
+
+
+
+
 export const OrderServices = {
   createOrderIntoDB,
   getTotalReveneuFromCarModel,
   getAllOrderFromDB,
-  verifyPayment
+  verifyPayment,
+  getSingleOrder
 };
