@@ -9,7 +9,7 @@ const app: Application = express();
 //parsers
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: ['https://car-shop-client-smoky.vercel.app/'], credentials: true }));
+app.use(cors({ origin: ['https://car-shop-client-smoky.vercel.app'], credentials: true }));
 app.use('/api/v1', router);
 app.get('/', (req: Request, res: Response) => {
   res.send('Car Store Server is Running...');
